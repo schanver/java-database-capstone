@@ -1,5 +1,28 @@
 /* This is the style sheet for the doctorDashboard.html */
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 40px;
+}
+
 .table-header {
   font-size: 24px;
   color: #015c5d;
@@ -66,10 +89,45 @@ tbody tr:hover {
   background-color: #015c5d;
 }
 
+.today-btn:hover {
+  background-color: #017d7e;
+}
+
 .date-picker {
   margin-left: 10px;
   margin-top: 13px;
   border-radius: 8px;
   padding: 10px;
   height: 30px;
+}
+
+/* Small screens: let the table scroll sideways and tighten spacing */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 20px;
+  }
+
+  #patientTable {
+    display: block;
+    overflow-x: auto;
+  }
+
+  td,
+  th {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .main-content .filter-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .today-btn,
+  .date-picker {
+    width: 100%;
+    margin: 10px 0 0;
+  }
 }
