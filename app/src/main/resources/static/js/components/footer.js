@@ -26,7 +26,7 @@ function renderFooter() {
           </div>
           <div class="footer-column">
             <h4>Legals</h4>
-            <a href="#">Terms & Conditions</a>
+            <a href="#">Terms &amp; Conditions</a>
             <a href="#">Privacy Policy</a>
             <a href="#">Licensing</a>
           </div>

@@ -65,7 +65,7 @@ export function createDoctorCard(doctor) {
     const bookNow = document.createElement("button");
     bookNow.textContent = "Book Now";
     bookNow.addEventListener("click", () => {
-      alert("Patient needs to login first.");
+      alert("Please log in to book an appointment.");
     });
     actionsDiv.appendChild(bookNow);
   } else if (role === "loggedPatient") {
