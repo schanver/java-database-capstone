@@ -1,0 +1,34 @@
+name: Lint Frontend
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint-frontend:
+    runs-on: ubuntu-latest
+    env:
+      RESOURCES: app/src/main/resources
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install linters
+        run: npm install -g htmlhint stylelint eslint
+
+      # Static pages plus the Thymeleaf dashboard templates.
+      - name: Lint HTML
+        run: htmlhint "$RESOURCES/static/**/*.html" "$RESOURCES/templates/**/*.html" || true
+
+      # Uses .stylelintrc.json at the repo root.
+      - name: Lint CSS
+        run: stylelint "$RESOURCES/static/assets/css/**/*.css" || true
+
+      # Uses eslint.config.mjs at the repo root.
+      - name: Lint JavaScript
+        run: eslint "$RESOURCES/static/js/**/*.js" || true
