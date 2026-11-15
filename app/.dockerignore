@@ -1,0 +1,9 @@
+# The image builds its own jar; keep local build output and tooling out of the context.
+target/
+.mvn/wrapper/maven-wrapper.jar
+*.iml
+.idea/
+.vscode/
+HELP.md
+Dockerfile
+.dockerignore

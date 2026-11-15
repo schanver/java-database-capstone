@@ -1,0 +1,54 @@
+
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: "3306"
+      MYSQL_USER: smartclinic
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-smartclinic}
+      MONGODB_URI: mongodb://mongodb:27017/prescriptions
+    restart: unless-stopped
+
+  mysql:
+    image: mariadb:11.4
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MARIADB_DATABASE: cms
+      MARIADB_USER: smartclinic
+      MARIADB_PASSWORD: ${MYSQL_PASSWORD:-smartclinic}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ../db/stored-procedures.sql:/docker-entrypoint-initdb.d/01-stored-procedures.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mongodb:
+    image: mongo:6.0
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: prescriptions
+    volumes:
+      - mongo-data:/data/db
+      - ../db/seed-mongo.js:/docker-entrypoint-initdb.d/seed-mongo.js:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.runCommand({ ping: 1 })"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mysql-data:
+  mongo-data:
